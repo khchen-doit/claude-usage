@@ -1,0 +1,20 @@
+{
+  "name": "claude-usage",
+  "owner": {
+    "name": "khchen-doit",
+    "email": "kaihong0814@gmail.com"
+  },
+  "metadata": {
+    "description": "Claude Code plugin that displays 5-hour and weekly rate limit usage as a persistent status line",
+    "version": "0.0.1"
+  },
+  "plugins": [
+    {
+      "name": "claude-usage",
+      "source": "github:khchen-doit/claude-usage",
+      "description": "Real-time Claude Code rate limit tracker — shows 5-hour and weekly token usage as a color-coded status line",
+      "category": "monitoring",
+      "tags": ["claude-code", "rate-limit", "usage", "statusline", "monitor"]
+    }
+  ]
+}
