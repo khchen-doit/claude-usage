@@ -28,6 +28,25 @@ This plugin surfaces that information as a persistent, color-coded status line s
 
 Run these three commands inside Claude Code:
 
+<details>
+<summary><strong>⚠️ Linux users: Click here first</strong></summary>
+
+On Linux, `/tmp` is often a separate filesystem (tmpfs), which causes plugin installation to fail with:
+
+```
+EXDEV: cross-device link not permitted
+```
+
+**Fix**: Set TMPDIR before installing:
+
+```bash
+mkdir -p ~/.cache/tmp && TMPDIR=~/.cache/tmp claude
+```
+
+Then run the install command below in that session. This is a [Claude Code platform limitation](https://github.com/anthropics/claude-code/issues/14799).
+
+</details>
+
 ```
 /plugin marketplace add khchen-doit/claude-usage
 /plugin install claude-usage
@@ -35,25 +54,6 @@ Run these three commands inside Claude Code:
 ```
 
 Then **restart Claude Code**. The usage status line appears at the bottom of the interface automatically.
-
----
-
-## Optional: Show Usage Before Starting Claude
-
-To display your current Claude usage when you type `claude` in your terminal:
-
-**WSL / Linux / macOS** — run once, then add the source line to `~/.bashrc`:
-
-```bash
-bash ~/.claude/plugins/claude-usage/install.sh
-echo '. ~/.claude/claude_bashrc.sh' >> ~/.bashrc
-```
-
-**PowerShell (Windows)** — run once, then add the printed snippet to `$PROFILE`:
-
-```powershell
-~\.claude\plugins\claude-usage\install.ps1
-```
 
 ---
 

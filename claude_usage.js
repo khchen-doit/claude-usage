@@ -3,15 +3,18 @@ const path = require('path');
 const os = require('os');
 
 function getSnapshotPath() {
+  const localPath = path.join(os.homedir(), '.claude', 'usage_snapshot.json');
   try {
-    // WSL: snapshot lives in Windows .claude, not Linux home
     if (fs.readFileSync('/proc/version', 'utf8').toLowerCase().includes('microsoft')) {
+      // Native WSL2 Claude Code writes snapshot to Linux home — prefer that
+      if (fs.existsSync(localPath)) return localPath;
+      // Windows Claude Code accessed from WSL2 terminal — snapshot is on Windows side
       const { execSync } = require('child_process');
       const winUser = execSync('cmd.exe /c echo %USERNAME%', { encoding: 'utf8' }).trim();
       return `/mnt/c/Users/${winUser}/.claude/usage_snapshot.json`;
     }
   } catch {}
-  return path.join(os.homedir(), '.claude', 'usage_snapshot.json');
+  return localPath;
 }
 
 const SNAPSHOT_PATH = getSnapshotPath();

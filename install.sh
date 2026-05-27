@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Optional: sets up shell integration so usage is shown when you type `claude` in terminal.
-# The plugin itself (statusLine inside Claude Code) is configured via /claude-usage:setup.
-
 set -e
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -11,7 +8,10 @@ mkdir -p "$DOTCLAUDE"
 cp "$PROJECT_DIR/claude_bashrc.sh" "$DOTCLAUDE/"
 echo "$PROJECT_DIR" > "$DOTCLAUDE/claude_usage_path"
 
-echo "Shell integration installed."
+node "$PROJECT_DIR/setup_settings.js" "$PROJECT_DIR"
+
 echo ""
-echo "Add to ~/.bashrc:"
+echo "Add to ~/.bashrc or ~/.zshrc for shell display before each 'claude' invocation:"
 echo "  . ~/.claude/claude_bashrc.sh"
+echo ""
+echo "Restart Claude Code to activate the status line."

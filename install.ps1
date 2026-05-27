@@ -1,5 +1,4 @@
-# Optional: sets up shell integration so usage is shown when you type `claude` in PowerShell.
-# The plugin itself (statusLine inside Claude Code) is configured via /claude-usage:setup.
+# Sets up claude-usage: shell integration + statusLine + Stop hook in ~/.claude/settings.json
 
 $ProjectDir = $PSScriptRoot
 $DotClaude  = "$HOME\.claude"
@@ -7,9 +6,10 @@ $DotClaude  = "$HOME\.claude"
 New-Item -ItemType Directory -Force $DotClaude | Out-Null
 $ProjectDir | Out-File "$DotClaude\claude_usage_path" -Encoding utf8 -NoNewline
 
-Write-Host "Shell integration installed."
+node "$ProjectDir\setup_settings.js" $ProjectDir
+
 Write-Host ""
-Write-Host "Add to PowerShell profile ($PROFILE):"
+Write-Host "Add to PowerShell profile ($PROFILE) for shell display before each 'claude' invocation:"
 Write-Host @"
 `$_CLAUDE_BIN = (Get-Command claude -ErrorAction SilentlyContinue).Source
 function claude {
@@ -17,3 +17,5 @@ function claude {
     & `$_CLAUDE_BIN @args
 }
 "@
+Write-Host ""
+Write-Host "Restart Claude Code to activate the status line."
