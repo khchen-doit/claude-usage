@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "claude-usage",
-      "source": "github:khchen-doit/claude-usage",
+      "source": ".",
       "description": "Real-time Claude Code rate limit tracker — shows 5-hour and weekly token usage as a color-coded status line",
       "category": "monitoring",
       "tags": ["claude-code", "rate-limit", "usage", "statusline", "monitor"]
