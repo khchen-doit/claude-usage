@@ -10,6 +10,8 @@ A lightweight [Claude Code](https://claude.ai/code) plugin that tracks your **5-
 5h ███░░░░░░░ 29% ready  │  7d ░░░░░░░░░░ 3% Fri 5:00 AM
 ```
 
+![實圖](screenshot.png)
+
 Color-coded by usage: **green** < 50% · **yellow** 50–80% · **red** > 80%
 
 > Reads data directly from Claude Code — no extra API calls, no token consumption.
@@ -50,6 +52,7 @@ Then run the install command below in that session. This is a [Claude Code platf
 ```
 /plugin marketplace add khchen-doit/claude-usage
 /plugin install claude-usage
+/reload-plugins
 /claude-usage:setup
 ```
 
@@ -66,11 +69,15 @@ Then **restart Claude Code**. The usage status line appears at the bottom of the
 
 ## How It Works
 
-Claude Code calls `claude_statusline.js` every 30 seconds via the `statusLine` hook, passing rate limit data as JSON on stdin. The script formats usage percentages with ANSI color coding and outputs a right-aligned line — Claude Code renders it below the conversation.
+The plugin has two parts, configured so neither breaks when Claude Code updates the plugin or sweeps its cache:
 
-A `Stop` hook saves a local snapshot after each response so `node claude_usage.js` can display the last known rate limit state outside of an active session.
+**Stop hook (snapshot writer) — provided by the plugin itself.**
+`hooks/hooks.json` declares a `Stop` hook that runs `claude_usage_hook.js` via the built-in `${CLAUDE_PLUGIN_ROOT}` placeholder. Claude Code re-resolves that placeholder to the _current_ plugin version on every launch, so the hook self-heals across updates and cache cleanup. It is loaded automatically when the plugin is enabled — nothing is written into `settings.json`. After each response it saves a snapshot to `~/.claude/usage_snapshot.json`, which `node claude_usage.js` reads to show the last known state outside an active session.
 
-`${CLAUDE_PLUGIN_ROOT}` in the generated config is a Claude Code built-in placeholder that expands to the plugin's install path at runtime — no hardcoded paths, works on any machine.
+**statusLine (live display) — installed by `/claude-usage:setup`.**
+Claude Code does not accept a `statusLine` from a plugin (only the main `settings.json` can define it), so `/claude-usage:setup` copies `claude_statusline.js` to a stable location at `~/.claude/claude-usage/` and points `settings.json` at that absolute path. Because the copy lives outside the volatile plugin cache, the status line keeps working even after the cache is swept. Claude Code calls it every 30 seconds, passing live rate-limit data as JSON on stdin; the script formats color-coded usage and outputs a right-aligned line.
+
+> After updating the plugin, re-run `/claude-usage:setup` to refresh the stable statusLine copy. The hook needs no action — it updates itself.
 
 ---
 
@@ -81,7 +88,9 @@ claude-usage/
 ├── .claude-plugin/
 │   └── plugin.json          # Plugin manifest
 ├── commands/
-│   └── setup.md             # /claude-usage:setup command
+│   └── setup.md             # /claude-usage:setup command (statusLine only)
+├── hooks/
+│   └── hooks.json           # Plugin-native Stop hook (auto-loaded, self-healing)
 ├── claude_statusline.js     # StatusLine script (run every 30s)
 ├── claude_usage_hook.js     # Stop hook — saves snapshot after each response
 ├── claude_usage.js          # Standalone display (outside Claude Code)

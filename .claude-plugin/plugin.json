@@ -9,6 +9,7 @@
   "commands": [
     "./commands/setup.md"
   ],
+  "hooks": "./hooks/hooks.json",
   "homepage": "https://github.com/khchen-doit/claude-usage",
   "repository": "https://github.com/khchen-doit/claude-usage",
   "license": "MIT",

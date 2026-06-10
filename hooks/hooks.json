@@ -1,0 +1,16 @@
+{
+  "description": "claude-usage Stop hook — saves a rate-limit snapshot after each response",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/claude_usage_hook.js"]
+          }
+        ]
+      }
+    ]
+  }
+}
