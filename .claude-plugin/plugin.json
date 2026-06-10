@@ -1,15 +1,12 @@
 {
   "name": "claude-usage",
   "description": "Minimal Claude Code usage monitor — shows 5-hour and weekly rate limit in the statusLine",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "khchen-doit",
     "url": "https://github.com/khchen-doit"
   },
-  "commands": [
-    "./commands/setup.md"
-  ],
-  "hooks": "./hooks/hooks.json",
+  "commands": ["./commands/setup.md"],
   "homepage": "https://github.com/khchen-doit/claude-usage",
   "repository": "https://github.com/khchen-doit/claude-usage",
   "license": "MIT",
