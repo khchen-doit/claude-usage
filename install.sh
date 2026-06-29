@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Sets up claude-usage: shell integration + statusLine in ~/.claude/settings.json
+# (the Stop hook is auto-registered by the plugin; setup_settings.js installs the
+#  runtime scripts to a stable ~/.claude/claude-usage dir so paths survive updates)
 set -e
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

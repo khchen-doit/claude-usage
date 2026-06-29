@@ -1,4 +1,6 @@
-# Sets up claude-usage: shell integration + statusLine + Stop hook in ~/.claude/settings.json
+# Sets up claude-usage: shell integration + statusLine in ~/.claude/settings.json
+# (the Stop hook is auto-registered by the plugin; setup_settings.js installs the
+#  runtime scripts to a stable ~/.claude/claude-usage dir so paths survive updates)
 
 $ProjectDir = $PSScriptRoot
 $DotClaude  = "$HOME\.claude"
